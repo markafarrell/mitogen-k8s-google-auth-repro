@@ -47,37 +47,37 @@
         rancher/k3s:v1.27.4-k3s1 server --tls-san=k3s;
     ```
 
-Setup Management Server
+6. Setup Management Server
 
-```
-docker exec management-server apt update;
-docker exec management-server apt install -y openssh-server python3 curl;
-docker exec management-server systemctl enable sshd;
-docker exec management-server systemctl start sshd;
-docker exec management-server pip3 install --upgrade -r /data/management-requirements-broken.yml;
+    ```
+    docker exec management-server apt update;
+    docker exec management-server apt install -y openssh-server python3 curl;
+    docker exec management-server systemctl enable sshd;
+    docker exec management-server systemctl start sshd;
+    docker exec management-server pip3 install --upgrade -r /data/management-requirements-broken.yml;
 
-# Fix kubeconfig
-docker exec management-server cp /config/kubeconfig.yaml /data/
-docker exec management-server sed -i 's/127[.]0[.]0[.]1/k3s/' /data/kubeconfig.yaml
+    # Fix kubeconfig
+    docker exec management-server cp /config/kubeconfig.yaml /data/
+    docker exec management-server sed -i 's/127[.]0[.]0[.]1/k3s/' /data/kubeconfig.yaml
 
-# Install kubectl
-docker exec management-server curl -LO "https://dl.k8s.io/release/v1.27.4/bin/linux/amd64/kubectl"
-docker exec management-server install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-docker exec -e no_proxy=k3s -e NO_PROXY=k3s management-server kubectl get nodes
+    # Install kubectl
+    docker exec management-server curl -LO "https://dl.k8s.io/release/v1.27.4/bin/linux/amd64/kubectl"
+    docker exec management-server install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    docker exec -e no_proxy=k3s -e NO_PROXY=k3s management-server kubectl get nodes
 
-# Add test user
-docker exec -i management-server useradd --create-home test;
+    # Add test user
+    docker exec -i management-server useradd --create-home test;
 
-# Set test user password
-printf 'test123456\ntest123456' | docker exec -i management-server passwd test;
+    # Set test user password
+    printf 'test123456\ntest123456' | docker exec -i management-server passwd test;
 
-# Copy kubeconfig into test user home
-docker exec -i management-server mkdir -p /home/test/.kube;
-docker exec -i management-server cp /data/kubeconfig.yaml /home/test/.kube/config;
-docker exec -i management-server chown test:test /home/test/.kube/config;
-```
+    # Copy kubeconfig into test user home
+    docker exec -i management-server mkdir -p /home/test/.kube;
+    docker exec -i management-server cp /data/kubeconfig.yaml /home/test/.kube/config;
+    docker exec -i management-server chown test:test /home/test/.kube/config;
+    ```
 
-6. Run playbook with normal strategy
+7. Run playbook with normal strategy
 
    ```ansible-playbook playbook.yml \
     -i ",$(docker inspect -f \
@@ -89,7 +89,7 @@ docker exec -i management-server chown test:test /home/test/.kube/config;
     --extra-vars=ansible_password=test123456
     ```
 
-7. Run playbook with mitogen strategy
+8. Run playbook with mitogen strategy
 
    ```ansible-playbook playbook.yml \
     -i ",$(docker inspect -f \
@@ -115,12 +115,12 @@ docker exec -i management-server chown test:test /home/test/.kube/config;
     172.24.0.2                 : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
     ```
 
-8. Downgrade google-auth
+9. Downgrade google-auth
     ```
     docker exec management-server pip3 install --upgrade -r /data/management-requirements-working.yml;
     ```
 
-9. Re-run with mitogen enabled
+10. Re-run with mitogen enabled
 
     ```ansible-playbook playbook.yml \
     -i ",$(docker inspect -f \
