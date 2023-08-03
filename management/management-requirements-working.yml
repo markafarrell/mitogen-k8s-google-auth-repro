@@ -1,0 +1,4 @@
+kubernetes==25.3.0
+google-auth==2.21.0
+pyyaml==6.0.1
+jsonpatch

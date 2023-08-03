@@ -1,0 +1,21 @@
+- name: Create a namespace
+  hosts: all
+  gather_facts: false
+  strategy: "{{ strategy }}"
+  tasks:
+    - name: Creating namespace
+      kubernetes.core.k8s:
+        kind: Namespace
+        api_version: v1
+        name: test
+        state: present
+
+    - name: Get namespace
+      kubernetes.core.k8s_info:
+        kind: Namespace
+        api_version: v1
+        name: test
+      register: test
+
+    - debug:
+        var: test
