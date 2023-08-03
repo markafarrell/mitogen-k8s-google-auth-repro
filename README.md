@@ -2,8 +2,10 @@
 
 0. Install virtualenv and ssh pass
 
-   ```pip3 install virtualenv```
-   ```apt install sshpass```
+   ```
+   pip3 install virtualenv
+   apt install sshpass
+   ```
 
 1. Create Virtual Environment
 
