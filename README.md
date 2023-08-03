@@ -135,4 +135,68 @@
     This works
 
     ```
+    [WARNING]: Found variable using reserved name: strategy
+
+    PLAY [Create a namespace] *****************************************************************************************************************************************************************************
+
+    TASK [Creating namespace] *****************************************************************************************************************************************************************************
+    ok: [172.24.0.2]
+
+    TASK [Get namespace] **********************************************************************************************************************************************************************************
+    ok: [172.24.0.2]
+
+    TASK [debug] ******************************************************************************************************************************************************************************************
+    ok: [172.24.0.2] => {
+        "test": {
+            "ansible_facts": {
+                "discovered_interpreter_python": "/usr/bin/python3"
+            },
+            "api_found": true,
+            "changed": false,
+            "failed": false,
+            "resources": [
+                {
+                    "apiVersion": "v1",
+                    "kind": "Namespace",
+                    "metadata": {
+                        "creationTimestamp": "2023-08-03T04:50:00Z",
+                        "labels": {
+                            "kubernetes.io/metadata.name": "test"
+                        },
+                        "managedFields": [
+                            {
+                                "apiVersion": "v1",
+                                "fieldsType": "FieldsV1",
+                                "fieldsV1": {
+                                    "f:metadata": {
+                                        "f:labels": {
+                                            ".": {},
+                                            "f:kubernetes.io/metadata.name": {}
+                                        }
+                                    }
+                                },
+                                "manager": "OpenAPI-Generator",
+                                "operation": "Update",
+                                "time": "2023-08-03T04:50:00Z"
+                            }
+                        ],
+                        "name": "test",
+                        "resourceVersion": "793",
+                        "uid": "d317a1ea-3f22-41ff-8d72-ff8fc8071c1c"
+                    },
+                    "spec": {
+                        "finalizers": [
+                            "kubernetes"
+                        ]
+                    },
+                    "status": {
+                        "phase": "Active"
+                    }
+                }
+            ]
+        }
+    }
+
+    PLAY RECAP ********************************************************************************************************************************************************************************************
+    172.24.0.2                 : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
     ```
